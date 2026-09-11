@@ -1,0 +1,18 @@
+[package]
+name = "mitos-browser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wry = "0.40"
+tao = "0.28"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["rt-multi-thread", "sync"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
