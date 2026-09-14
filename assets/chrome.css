@@ -1,0 +1,238 @@
+:root {
+  --bg-0: #0b0e17;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-strong: rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --text: #eef1f8;
+  --text-dim: #9aa3b8;
+  --accent: #5ee6d0;
+  --accent-glow: rgba(94, 230, 208, 0.35);
+  --accent-incog: #b98cff;
+  --accent-incog-glow: rgba(185, 140, 255, 0.4);
+  --warn: #f0b860;
+  --danger: #ff6b6b;
+  --danger-bg: rgba(255, 107, 107, 0.18);
+  --radius: 12px;
+  --radius-sm: 9px;
+  --radius-pill: 999px;
+  --font: "Cantarell", "Noto Sans", system-ui, sans-serif;
+  /* Overridden at runtime by scifiSetBackground() (see chrome.js) with a
+     cache-busting query param whenever the user changes their picture;
+     this default is what a fresh page load uses. Paints nothing (and
+     costs nothing extra to look up) when no custom background is set —
+     see protocol.rs's background_response(). */
+  --scifi-bg-url: url('scifi://asset/background');
+}
+
+* { box-sizing: border-box; }
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  position: relative;
+  color: var(--text);
+  font: 13px/1.4 var(--font);
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 6px;
+  background:
+    linear-gradient(rgba(6, 9, 16, 0.55), rgba(6, 9, 16, 0.55)),
+    var(--scifi-bg-url) center / cover no-repeat,
+    radial-gradient(120% 180% at 12% -20%, rgba(94, 230, 208, 0.16), transparent 55%),
+    radial-gradient(120% 180% at 92% 130%, rgba(122, 90, 248, 0.18), transparent 55%),
+    var(--bg-0);
+  transition: background-color .2s ease;
+}
+
+/* Active tab is incognito: shift the toolbar's accent from teal to
+   violet so it's obvious at a glance you're in a private tab. */
+body.incognito #toolbar {
+  border-color: var(--accent-incog-glow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--accent-incog-glow);
+}
+body.incognito #addressbar:focus-within {
+  border-color: var(--accent-incog-glow);
+  box-shadow: 0 0 0 3px var(--accent-incog-glow);
+}
+body.incognito #security-dot.secure {
+  background: var(--accent-incog);
+  box-shadow: 0 0 6px var(--accent-incog-glow);
+}
+
+/* --- Tab strip: floating glass pills, no strip background of its own --- */
+
+#tabstrip {
+  height: 32px;
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#tabstrip::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  min-width: 110px;
+  max-width: 190px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  cursor: default;
+  flex-shrink: 0;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.tab:hover {
+  background: var(--glass-strong);
+  border-color: var(--glass-border-strong);
+}
+.tab.active {
+  background: var(--glass-strong);
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 4px 16px rgba(94, 230, 208, 0.12);
+}
+.tab.incognito {
+  background: rgba(185, 140, 255, 0.08);
+  border-color: rgba(185, 140, 255, 0.22);
+}
+.tab.incognito.active {
+  border-color: var(--accent-incog-glow);
+  box-shadow: 0 0 0 1px var(--accent-incog-glow), 0 4px 16px rgba(185, 140, 255, 0.14);
+}
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--accent-incog);
+}
+
+.tab-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-dim);
+}
+.tab.active .tab-title { color: var(--text); }
+
+.tab-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 5px;
+  cursor: default;
+  flex-shrink: 0;
+  transition: background-color .12s ease, color .12s ease;
+}
+.tab-close:hover { background: rgba(255, 255, 255, 0.14); color: var(--text); }
+
+/* --- Toolbar: one floating glass bar --- */
+
+#toolbar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  cursor: default;
+  transition: background-color .15s ease, transform .1s ease, opacity .15s ease;
+}
+.nav-btn:hover { background: var(--glass-strong); }
+.nav-btn:active { transform: scale(0.92); }
+.nav-btn:disabled { color: var(--text-dim); opacity: 0.4; }
+
+#addressbar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 6px 0 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+#addressbar:focus-within {
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#security-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+#security-dot.secure { background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
+#security-dot.plain { background: var(--warn); box-shadow: 0 0 6px rgba(240, 184, 96, 0.35); }
+
+#address {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+#address::placeholder { color: var(--text-dim); }
+
+.notice-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--danger-bg);
+  color: var(--danger);
+  cursor: default;
+  animation: notice-in .18s ease;
+}
+@keyframes notice-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
