@@ -1,0 +1,42 @@
+:root {
+  --bg-0: #0b0e17;
+  --text: #eef1f8;
+  --text-dim: #9aa3b8;
+  --accent: #5ee6d0;
+  --font: "Cantarell", "Noto Sans", system-ui, sans-serif;
+  /* See chrome.css for why this is safe to reference unconditionally. */
+  --scifi-bg-url: url('scifi://asset/background');
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  color: var(--text);
+  font: 14px var(--font);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(rgba(6, 9, 16, 0.55), rgba(6, 9, 16, 0.55)),
+    var(--scifi-bg-url) center / cover no-repeat,
+    radial-gradient(120% 160% at 20% -10%, rgba(94, 230, 208, 0.14), transparent 55%),
+    radial-gradient(120% 160% at 85% 115%, rgba(122, 90, 248, 0.16), transparent 55%),
+    var(--bg-0);
+}
+
+.mark {
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text);
+  text-shadow: 0 0 24px rgba(94, 230, 208, 0.35);
+}
+
+.hint {
+  margin-top: 12px;
+  color: var(--text-dim);
+}

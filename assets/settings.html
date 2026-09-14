@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="wrap">
+    <h1>Settings</h1>
+
+    <section class="card">
+      <h2>Privacy</h2>
+      <div class="row">
+        <div>
+          <div class="row-title">Block trackers &amp; ads</div>
+          <div class="row-sub">Applies to every tab, immediately.</div>
+        </div>
+        <button id="toggle" class="switch" role="switch" aria-checked="true" aria-label="Block trackers and ads">
+          <span class="knob"></span>
+        </button>
+      </div>
+
+      <div class="stat">
+        <div class="stat-num" id="count">0</div>
+        <div class="stat-label">tracking attempts blocked this session</div>
+      </div>
+
+      <details class="hostlist-details">
+        <summary>Blocked domains (starter list)</summary>
+        <ul id="hostlist" class="hostlist"></ul>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Appearance</h2>
+      <div class="row">
+        <div>
+          <div class="row-title">Background image</div>
+          <div class="row-sub" id="bg-status">Default</div>
+        </div>
+        <div class="btn-group">
+          <button id="choose-bg" class="btn">Choose image&hellip;</button>
+          <button id="reset-bg" class="btn btn-ghost">Reset</button>
+        </div>
+      </div>
+      <p class="fine">
+        Shown, blurred, behind the tab strip, toolbar, and new-tab page.
+        The file is copied as-is into SCIFI's own data folder — it isn't
+        uploaded anywhere.
+      </p>
+    </section>
+    <section class="card">
+      <div class="row">
+        <h2 class="no-margin">Private tabs this session</h2>
+        <button id="clear-private" class="btn btn-ghost">Clear</button>
+      </div>
+      <p class="fine">Not saved to disk — cleared automatically once your last incognito tab closes.</p>
+      <ul id="private-list" class="entry-list"></ul>
+      <p id="private-empty" class="fine empty-state">Nothing yet.</p>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <h2 class="no-margin">History</h2>
+        <button id="clear-history" class="btn btn-ghost">Clear all</button>
+      </div>
+      <input id="history-search" class="search-box" type="text" placeholder="Search history" autocomplete="off" spellcheck="false">
+      <div id="history-groups"></div>
+      <p id="history-empty" class="fine empty-state">No history yet.</p>
+    </section>
+
+    <section class="card">
+      <h2>Advanced</h2>
+      <div class="row">
+        <div>
+          <div class="row-title">Developer tools</div>
+          <div class="row-sub">Right-click a page → Inspect Element. Applies to new tabs.</div>
+        </div>
+        <button id="devtools-toggle" class="switch" role="switch" aria-checked="false" aria-label="Enable developer tools">
+          <span class="knob"></span>
+        </button>
+      </div>
+    </section>
+  </div>
+  <script src="settings.js"></script>
+</body>
+</html>
