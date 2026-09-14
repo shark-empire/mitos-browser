@@ -1,14 +1,22 @@
 [package]
-name = "mitos-browser"
+name = "scifi"
 version = "0.1.0"
 edition = "2021"
+description = "SCIFI — the native browser for MITOS. A thin Rust chrome (wry/WebKitGTK) tuned for speed, security, and memory efficiency on real Linux hardware."
 
 [dependencies]
-wry = "0.40"
-tao = "0.28"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tokio = { version = "1.0", features = ["rt-multi-thread", "sync"] }
+# GTK + WebKitGTK bindings (via wry's build_gtk path) so SCIFI works on both
+# X11 and Wayland — build_as_child alone is X11-only on Linux.
+# "devtools" is required for AppState::devtools_enabled to have any effect
+# in release builds at all (debug builds always have it) — see README.
+wry = { version = "0.56", features = ["devtools"] }
+tao = "0.36"
+gtk = "0.18"
+
+# IPC payloads between the chrome UI (JS) and Rust are small, strictly-typed
+# JSON commands — serde keeps the parsing correct without a hand-rolled parser.
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
 [profile.release]
 opt-level = 3
